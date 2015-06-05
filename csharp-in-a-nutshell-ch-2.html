@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<!-- Strata by HTML5 UP-->
+<!-- html5up.net | @n33co-->
+<!-- Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)-->
+<!-- Edit by Hao-->
+<html lang="en">
+  <head>    <title>Hao&#39;s Blog    </title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.poptrox.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/init.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="/css/skel.css">
+      <link rel="stylesheet" href="/css/style.css">
+      <link rel="stylesheet" href="/css/style-xlarge.css">
+    </noscript>
+  </head>
+  <body id="top">
+    <div>
+      <nav id="nav">
+        <ul class="container">
+          <li><a href="/" class="fa fa-code"></a>
+          </li>          <li><a href="/category/coding.html">Coding</a>
+          </li>          <li><a href="/category/life.html">Life</a>
+          </li>          <li><a href="/archives.html">Archives</a>
+          </li>          <li><a href="/pages/about.html">About</a>
+          </li>        </ul>
+      </nav>
+    </div>
+    <header id="header"><a href="#" class="image avatar"><img src="/images/me.jpg" alt=""></a>
+      <h1><strong>I'm Hao</strong>, a fan of programming.<br>Welcome to my blog,<br>where I keep my ideas and thoughts.<br>
+      </h1>
+    </header>
+    <div id="main"><section>
+  <header class="major">
+    <h2>Reading Notes on C# 5.0 in a Nutshell Ch.2</h2>
+  </header>
+  <p class="time">Fri 05 June 2015</p><br/><br/><h3>To be honest, I was a little reluctant to use C# at the begining.</h3>
+<p>But work is work after all, I cannot escape it. After using it for some time, I found C# to be a very powerful language and decided to learn it thoroughtly. I used to write reading note when I read books. And to make to notes more consistent and avoid changing the pattern every now and then, I'm making the commond rules for my notes:</p>
+<ul>
+<li><font color="#DA1D1B">Red</font> means this is important.<ul>
+<li>Inside <font color="#DA1D1B">red</font> region, <u>underline</u> could be use to stress even higher importance.</li>
+</ul>
+</li>
+<li><strong>Bold</strong> is for the language terms, like keywords</li>
+<li><em>Italic</em> indicates concepts, like cast, multi-threading</li>
+</ul>
+<p>OK, Though it is going to be boring, reading notes incoming!</p>
+<ol>
+<li>
+<p>Function in C#: <em>Methods</em>, <em>operators</em>, <em>constructor</em>, <em>properties</em>, <em>events</em>, <em>indexers</em>, <em>finalizers</em>. (p11)</p>
+</li>
+<li>
+<p>By convention, parameters, local variables and <font color="#DA1D1B">private fields</font> should be in camel case, and all other identifiers should be in Pascal case. (p12)</p>
+</li>
+<li>
+<p><code>@</code> prefix can be used to stop an identifier from being interpreted as a <em>keyword</em>. (p13)</p>
+</li>
+<li>
+<p>Some <em>keyword</em> are contextual, meaning that they're <em>keyword</em> only in some specific context. But once again, <font color="#DA1D1B">strive to avoid using any keyword as identifier</font>. (p14)</p>
+</li>
+<li>
+<p>C# uses the same comment style as C++. (p14)</p>
+</li>
+<li>
+<p>Conversion can happen between two <font color="#DA1D1B">compatible</font> types. (p18)</p>
+</li>
+<li>
+<p><em>Implicit</em> conversion happens automatically, if</p>
+<ul>
+<li>The conversion is guaranteed by the compiler that it will succeed.</li>
+<li>No information is lot in converion</li>
+</ul>
+</li>
+<li>
+<p><em>Explicit</em> conversion may lost information and requires a <em>cast</em>. To perform a <em>cast</em>, the conversion between the two types must be possible. (p18)</p>
+</li>
+<li>
+<p>A always fail conversion will be rejected by the compiler. (p18)</p>
+</li>
+<li>
+<p>C# type catagories: <em>value</em>, <em>reference</em>, <em>generic type parameters</em>, <em>pointer</em>. (p19)</p>
+</li>
+<li>
+<p><em>Value types</em> comprise most built-in types and custom <strong>struct</strong> and <strong>enum</strong> type. Its content is somply a value. (p19)</p>
+</li>
+<li>
+<p>Reference type comprise of all <strong>class</strong>, <strong>array</strong>, <strong>delegate</strong> and <strong>interface</strong>. (p19)</p>
+</li>
+<li>
+<p><font color="#DA1D1B">The assignment of value type instance always <em>copies</em> the instance.</font> (p19)</p>
+</li>
+<li>
+<p><em>Reference type</em> has two parts: an <em>object</em> and a <em>reference</em> to the object. The content of a reference type variable is the reference. Refence type assignment copies the reference only. Multiple instances of a reference type can refer to the same object.(p20)</p>
+</li>
+<li>
+<p><strong>null</strong> can be assigned to a reference, but not a value type. (p21)</p>
+</li>
+<li>
+<p><em>Value type</em> resembles c++'s <strong>struct</strong> or <strong>class</strong>, which has memory alignment and occupies approximatley the same size of memory of the fields. (p21)</p>
+</li>
+<li>
+<p><em>Reference type</em> requires separate allocations of memory for the reference of the object. It take as many bytes as <em>value type</em> to store its field, and has an extra administrative overhead for storing some metadata. Each reference will require extra bytes for pointing the data. (p22)</p>
+</li>
+<li>
+<p>Predefined types alias Framework type in <strong>System</strong> namespace. All predefined types except <strong>Decimal</strong> are <em>primitive type</em>. (p23)</p>
+</li>
+<li>
+<p>Of the <em>integral</em> types, <strong>int</strong> and <strong>long</strong> are favored by C# and runtime. Other integral types are more for space efficiency purpose. (p23)</p>
+</li>
+<li>
+<p>For numeric literals, <em>numeric suffix</em> can be used to explictly define the type. E.g <code>1.0F</code>, <code>1U</code>, <code>1L</code> <font color="#DA1D1B">(upper case is preferred)</font>. (p24)</p>
+</li>
+<li>
+<p>Sometimes <em>numeric suffix</em> is mandatory for initializing or assigning value to certain numeric types. For example:</p>
+<div class="highlight"><pre>float f = 1.0;
+</pre></div>
+
+
+<p>will fail, according to C#'s implicit type conversion rule. The correct way to do it:</p>
+<div class="highlight"><pre>float f = 1.0F;
+</pre></div>
+
+
+<p>(p25)</p>
+</li>
+<li>
+<p>8-bit and 16-bit numeric type do not support arithmetic operations (+, -, *, /, %). (p26)</p>
+</li>
+<li>
+<p>Arithmetic operation on integral type can overflow sliently. <strong>checked</strong> can be used to enforce a checking on overflow. But operations at compile time are always checked. (p27)</p>
+</li>
+<li>
+<p>C#'s <strong>char</strong> represents a Unicode character and occupies 2 bytes. <strong>char</strong> literals live inside single quote. (p32)</p>
+</li>
+<li>
+<p><strong>char</strong> can be converted to <em>numeric types</em> that can accommodate an unsigh <strong>short</strong>. (p33)</p>
+</li>
+<li>
+<p><code>@</code> can be used to turn off escape. Remember it can also stop <em>identifiers</em> being interpreted as <em>keyword</em>. (p33)</p>
+</li>
+<li>
+<p><code>@</code> can also be used for defining multiline string literals. Like ``` in python. (p34)</p>
+</li>
+<li>
+<p><code>+</code> can be used to concatenation <strong>string</strong>s, however as <strong>string</strong>s are immutable, this is not efficent. A better solution would be to use <strong>StringBuilder</strong>. (p34)</p>
+</li>
+<li>
+<p>Unlike C++, <strong>string</strong>s in C# can't be compared by using &gt; or &lt;. The <strong>CompareTo</strong> function is needed. (p34)</p>
+</li>
+<li>
+<p>Creating an <em>array</em> always preinitializes the elements with default values. The default value for a type is the result of a bitwise zeroing of memory. (p35)</p>
+</li>
+<li>
+<p>For <em>reference type</em> array, all the elements are initialized as <strong>null</strong>. (p35)</p>
+</li>
+<li>
+<p>To define <em>retangular array</em>s, put commas to separate each dimension. Like:</p>
+<div class="highlight"><pre>int matrix[,] = new int[2,3];
+char cube[,,] = new char[4,3,5];
+</pre></div>
+
+
+<p>To get the length of each dimension, use <strong>GetLength</strong> with the corresponding index:</p>
+<div class="highlight"><pre>char cube[,,] = new char[5,3,4];
+int len0 = cube.GetLength(0); // 5
+int len1 = cube.GetLength(1); // 3
+int len2 = cube.GetLength(2); // 4
+</pre></div>
+
+
+<p>(p36)</p>
+</li>
+<li>
+<p><em>Jagged array</em>s are declared using successive square brackets to represent each dimension.</p>
+<div class="highlight"><pre>int matrix[][] = new int[3][];
+</pre></div>
+
+
+<p>Each inner array is implicitly initialized to <strong>null</strong> rather than an empty array. Each inner array must be created manually:</p>
+<div class="highlight"><pre>for (int i = 0; i &lt; matrix.Length; i++)
+{
+    matrix[i] = new int[3];
+    for (int j = 0; j &lt; matrix[i].Length; j++)
+        matrix[i][j] = i * 3 + j;
+}
+</pre></div>
+
+
+<p>(p37)</p>
+</li>
+<li>
+<p>The <em>stack</em> is a block of memory for storing local variables and parameters. The stack logically grows and shrinks as a function is entered and exited. (p38)</p>
+</li>
+<li>
+<p>The <em>heap</em> is a block of memory in which objects (i.e., reference-type instances) reside. Whenever a new object is created, it is allocated on the heap, and a <em>reference</em> to that object is returned. <font color="#DA1D1B">Note that the <em>reference</em> itself can live in <em>stack</em>.</font> (p39)</p>
+</li>
+<li>
+<p><em>Value type</em> instances(and object references) live wherever the variable was declared. (p39)</p>
+</li>
+<li>
+<p>The <em>heap</em> also stores static fields and constants. (p39)</p>
+</li>
+<li>
+<p>The <strong>default</strong> keyword can be used to obtain the default value for any types. (p41)</p>
+</li>
+<li>
+<p>By default, the function arguments in C# is <em>passed by value</em>. To pass arguments <em>by reference</em>, put <strong>ref</strong> before the parameter declaration and the argument. <font color="#DA1D1B"><strong>ref</strong> must be place in both declaration and invocation</font>. (p42)</p>
+</li>
+<li>
+<p><strong>out</strong> resembles <strong>ref</strong>, but the argument need not to be assigned before going into the function and must be assigned before coming out the function. (p43)</p>
+</li>
+<li>
+<p>The <strong>params</strong> parameter modifier may be specified on the <font color="#DA1D1B">last</font> parameter of a method so that the method accepts any number of parameters of a particular type. <font color="#DA1D1B">The parameter type must be declared as an array</font>. (p44)</p>
+</li>
+<li>
+<p>Besides any number of parameters, an ordinary array can also be supplied to <strong>params</strong> arguments. (p45)</p>
+</li>
+<li>
+<p><em>Methods</em>, <em>constructors</em> and <em>indexers</em> can declare <em>optional parameters</em>. To declare a <em>optional parameter</em>, specify a <em>default value</em> to its declaration. (p45)</p>
+</li>
+<li>
+<p>The default value of an optional parameter must be specified by a constant expression, or <font color="#DA1D1B"> a <u>parameterless</u> constructor of a <em>value type</em>(not <em>reference type</em>). </font> Optional parameter can not be marked with <strong>ref</strong> or <strong>out</strong>. (p45)</p>
+</li>
+<li>
+<p>For parameters, <em>madatory</em> parameters come first, <em>optional</em> parameters come second, and <strong>params</strong> parameter come last. (p45)</p>
+</li>
+<li>
+<p>By default arguments are identified by position. However <em>named argument</em> can be use to change the way arguements are identified, put the name of the parameter followed by a semicolon before the argument like this:</p>
+<div class="highlight"><pre><span class="nt">void</span> <span class="nt">func</span><span class="o">(</span><span class="nt">int</span> <span class="nt">x</span><span class="o">,</span> <span class="nt">int</span> <span class="nt">y</span><span class="o">);</span>
+<span class="nt">func</span><span class="o">(</span><span class="nt">y</span><span class="nd">:1</span><span class="o">,</span> <span class="nt">x</span><span class="nd">:2</span><span class="o">);</span>
+</pre></div>
+
+
+<p><em>named argument</em> is very usefully when there're multiple optional parameters but only some of them need to be assigned. (p46)</p>
+</li>
+<li>
+<p>If the compiler is able to infer the type from the initialization expression, you can use the keyword <strong>var</strong> in place of the type declaration. (p46)</p>
+</li>
+<li>
+<p>A variable's scope extends in both direction in both direction, meaning the code like this is not legal:</p>
+<div class="highlight"><pre>{
+    {
+        int x;
+    }
+    int x;
+}
+</pre></div>
+
+
+<p>(p52)</p>
+</li>
+<li>
+<p>Besides <strong>break</strong>, <strong>goto case x</strong> and <strong>goto defalut</strong> can also be used in <strong>switch</strong> statement. (p55)</p>
+</li>
+<li>
+<p>The C# jump statements are <strong>break</strong>, <strong>continue</strong>, <strong>goto</strong>, <strong>return</strong> and <strong>throw</strong>, all of them obey the rule of <strong>try</strong> statement:</p>
+<ul>
+<li>A jump out of the <strong>try</strong> block always excutes the <strong>finally</strong> block before reach the destination.</li>
+<li>Except <strong>throw</strong>, no jump can be made from inside to outside of the <strong>finally</strong> block.
+(p57)</li>
+</ul>
+</li>
+<li>
+<p>The goto statement transfers execution to another label <font color="#DA1D1B">within a statement block</font>. (p58)</p>
+</li>
+<li>
+<p>Types are not defined in any <em>namespace</em> reside in <em>global namespace</em>. (p60)</p>
+</li>
+<li>
+<p>Names declared in outer namespaces can be used <font color="#DA1D1B">unqualified</font> within inner namespaces. If you want to refer to a type in a different branch of your namespace hierarchy, you can use a partially qualified name(<font color="#DA1D1B">starting after the common parent</font>). (p60)</p>
+</li>
+<li>
+<p>If the same type name appears in both an inner and an outer namespace, the inner name wins. To refer to the type in the outer namespace, you must (partially) qualify its name. (p61)</p>
+</li>
+<li>
+<p>Namespace declaration can repeated or even in different assemblies, as long as the type names within the namespaces don’t conflict. (p61)</p>
+</li>
+<li>
+<p>Instead of importing a namespace, it's possble to give an <em>alias</em> to a namespace or the type within it to get rid of name conflict problem.</p>
+<div class="highlight"><pre>using NS = NS1.NS2.NS3;
+using SomeType = NS1.NS2.SomeType;
+</pre></div>
+
+
+<p>(p62)</p>
+</li>
+<li>
+<p>When there're more than one assembly share the same full qualify name, the <strong>extern</strong> can be used together with compile option to give the assemblies different aliases. (p63)</p>
+</li>
+<li>
+<p>To refer to the <em>global</em> namespace, use the <strong>global</strong> keyword. However the <code>::</code> token is needed to qualify:</p>
+<div class="highlight"><pre><span class="nt">var</span> <span class="nt">a</span> <span class="o">=</span> <span class="nt">new</span> <span class="nt">global</span><span class="o">:</span><span class="nd">:NS</span><span class="nc">.SomeType</span><span class="o">();</span>
+</pre></div>
+
+
+</li>
+</ol>
+<br/>
+  <div>
+    <p class="article-info">[ <a href="/categories.html">Category</a> ]: <a href="/category/Coding.html">Coding</a>
+    </p>
+    <p class="article-info">[ <a href="/tags.html">Tags</a> ]
+: 
+<a href="/tag/reading-notes.html">Reading-Notes</a>&nbsp;&nbsp;<a href="/tag/code.html">Code</a>&nbsp;&nbsp;<a href="/tag/c#.html">C#</a>&nbsp;&nbsp;    </p>
+  </div>
+</section>
+<section>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">var disqus_shortname = 'cenhaosblog';(function() {  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();
+</script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+</section>    </div>
+    <footer id="footer">
+      <ul class="icons">
+        <li><a href="http://www.linkedin.com/pub/hao-cen/80/bbb/91a" class="icon fa-linkedin"><span class="label">Linkedin</span></a>
+        </li>
+        <li><a href="https://github.com/cenhao" class="icon fa-github"><span class="label">Github</span></a>
+        </li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; Hao Cen</li>
+        <li>Design: <a href="http://html5up.net">HTML5 UP</a>
+        </li>
+        <li>Powered by: <a href="http://blog.getpelican.com">Pelican</a>
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>
