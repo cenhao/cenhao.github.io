@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<!-- Strata by HTML5 UP-->
+<!-- html5up.net | @n33co-->
+<!-- Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)-->
+<!-- Edit by Hao-->
+<html lang="en">
+  <head>    <title>Hao&#39;s Blog    </title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.poptrox.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/init.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="/css/skel.css">
+      <link rel="stylesheet" href="/css/style.css">
+      <link rel="stylesheet" href="/css/style-xlarge.css">
+    </noscript>
+  </head>
+  <body id="top">
+    <div>
+      <nav id="nav">
+        <ul class="container">
+          <li><a href="/" class="fa fa-code"></a>
+          </li>          <li><a href="/category/coding.html">Coding</a>
+          </li>          <li><a href="/category/life.html">Life</a>
+          </li>          <li><a href="/archives.html">Archives</a>
+          </li>          <li><a href="/pages/about.html">About</a>
+          </li>        </ul>
+      </nav>
+    </div>
+    <header id="header"><a href="#" class="image avatar"><img src="/images/me.jpg" alt=""></a>
+      <h1><strong>I'm Hao</strong>, a fan of programming.<br>Welcome to my blog,<br>where I keep my ideas and thoughts.<br>
+      </h1>
+    </header>
+    <div id="main"><section>
+  <header class="major">
+    <h2>Reading Notes on C# 5.0 in a Nutshell Ch.3</h2>
+  </header>
+  <p class="time">Wed 01 Jul 2015</p><br/><br/><h3>Can't believe it took another month to finish the next chapter.</h3>
+<ol>
+<li>
+<p><strong>readonly</strong> modifier prevents a <em>field</em> from being assigned after construction. A <strong>readonly</strong> field can only be assigned in its declaration or in the enclosing constructor. (p68)</p>
+</li>
+<li>
+<p>If <em>fields</em> are not initialized, the <em>fields</em> are initialized with default value. (p68)</p>
+</li>
+<li>
+<p><strong>ref</strong> and <strong>out</strong> modifier used in <em>functions</em> can also be used in <em>method</em>. (p69)</p>
+</li>
+<li>
+<p>A <strong>class</strong> can have multiple <em>constructors</em>, and one constructor can call another by by putting <code>this(/* arguments for the corresponding constructor */)</code> after a <code>:</code>. (p70)</p>
+</li>
+<li>
+<p>Like C++, C# generates a default public parameterless constructor for a class <font color="#DA1D1B">iff</font> no constructor is explicitly defined. (p70)</p>
+</li>
+<li>
+<p>When a class is instantiated, the <em>fields</em> are initialized in the order the <em>fields</em> are declared and then the constructor is called. (p70)</p>
+</li>
+<li>
+<p>Any accessible fields or properties can be initialized after construction via a <em>object initializer</em>. The initializer is defined within braces. (p71)</p>
+</li>
+<li>
+<p>The way <em>initializer</em> works is that it first create a temporary object to initialize, then assign the object back to the original one. The reason for doing this is that if the initializer failed, the origin will not end up in half initialized state. (p71)</p>
+</li>
+<li>
+<p>One more thing to be noted about the <em>object initializer</em> is that the object is first initialized with the corresponding constructor, and then assigned the fields or properties to the given values one by one. Hence those fields or properties cannot be <strong>readonly</strong>. (p72)</p>
+</li>
+<li>
+<p>Besides referencing another constructor (entry 4), <strong>this</strong> can also be used to reference the instance itself. (p73)</p>
+</li>
+<li>
+<p>a <em>property</em> looks like a <em>field</em> from the outside, but internally it can contain logic and access control can be applied to its accessor (<strong>get</strong> and <strong>set</strong>). (p73)</p>
+</li>
+<li>
+<p>The <strong>get</strong> accessor must return a value of the property's type, and within the <strong>set</strong> accessor a special parameter named <strong>value</strong> can be used to get the value that's assigned to the property. (p73)</p>
+</li>
+<li>
+<p>A property can be made read-only or write-only by specifying only the <strong>get</strong> accessor or <strong>set</strong> accessor. (p74)</p>
+</li>
+<li>
+<p>A property typically has a dedicated backing field to store the underlying data. However, a property can also be computed from other data. (p74)</p>
+</li>
+<li>
+<p><em>automatic properties</em> can be used to instruct the compiler to prepare a private backing field for the property:</p>
+<div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Stock</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">decimal</span> <span class="n">CurrentPrice</span> <span class="p">{</span> <span class="n">get</span><span class="p">;</span> <span class="n">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>(p74)</p>
+</li>
+<li>
+<p><em>Accessors</em> must not more accessible that the declaration of the property. I.e., if the property is <strong>protected</strong>, then its accessor(s) can only be <strong>protected</strong> or <strong>private</strong>. (p75)</p>
+</li>
+<li>
+<p>Simple <font color="#DA1D1B">non-virtual</font> accessors can <em>inlined</em> by JIT compiler, eliminating any performance difference between accessing a property and a field. (75)</p>
+</li>
+<li>
+<p>To defined an <em>indexer</em>, define a <font color="#DA1D1B">property</font> called <strong>this</strong>(the <strong>this</strong> is reused again), specifying the arguments in square brackets. For instance:</p>
+<div class="highlight"><pre><span class="k">public</span> <span class="n">string</span> <span class="k">this</span> <span class="p">[</span><span class="kt">int</span> <span class="n">wordNum</span><span class="p">]</span>      <span class="c1">// indexer</span>
+<span class="p">{</span>
+    <span class="n">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">words</span> <span class="p">[</span><span class="n">wordNum</span><span class="p">];</span>  <span class="p">}</span>
+    <span class="n">set</span> <span class="p">{</span> <span class="n">words</span> <span class="p">[</span><span class="n">wordNum</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><em>indexer</em> is essentially a special <em>property</em>. (p75)</p>
+</li>
+<li>
+<p>A type may declare multiple indexers, each with parameters of different types. An indexer can also take more than one parameter. It can also be read-only or write-only by omitting the corresponding accessor. (p76)</p>
+</li>
+<li>
+<p>Use <strong>const</strong> to declare a <em>constant</em>. A <em>constant</em> can <font color="#DA1D1B"><u>only</u></font> be any of the built-in numeric types, <strong>bool</strong>, <strong>char</strong>, <strong>string</strong> or an <em>enum</em> type. To declare a "constant" reference type, use <strong>static readonly</strong>. (p76)</p>
+</li>
+<li>
+<p><strong>const</strong> is more restrictive than <strong>static readonly</strong> as it's determined at compile time. <strong>static readonly</strong>  is determined at run time. (p76)</p>
+</li>
+<li>
+<p>Besides normal constructors, C# has something called <em>static constructor</em> (what's the meaning of this?? Just something that makes the language even more complex..). This constructor is run once per type, when this type is being used:</p>
+<ul>
+<li>Instantiting the type</li>
+<li>Accessing a static member in the type
+(p77)</li>
+</ul>
+</li>
+<li>
+<p>A class can be marked <strong>static</strong>, indicating that it must be composed solely of <strong>static</strong> members and <font color="#DA1D1B">cannot be subclassed</font>. The <strong>System.Console</strong> and <strong>System.Math</strong> classes are good examples of static classes. (p78)</p>
+</li>
+<li>
+<p><em>Finalizer</em> in C# can be defined like destructor in C++, only that no accessibility modifier is needed. (Finalizer is not discussed in detail here.) (p79)</p>
+</li>
+<li>
+<p>The definition of a class can be split by using <strong>partial</strong>. <font color="#DA1D1B"><strong>partial</strong> must be specified in all the participants</font>, however the <em>base class</em> of the class can be specified in only some of the participants. Each participants can specify different <em>interface</em> to implement.</p>
+<p>To make the code easier to maintain, the <em>base class</em> should be declared in all the participants, but for the purpose of spliting implementation, <em>interface</em> can be declared only in the participants that's implementing it.</p>
+<div class="highlight"><pre><span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialClass</span> <span class="p">{</span> <span class="cm">/* Partial implementation A */</span> <span class="p">};</span>
+<span class="k">class</span> <span class="nc">PartialClass</span> <span class="p">{</span> <span class="cm">/* Partial implementation B */</span> <span class="p">};</span> <span class="c1">// Compile time error</span>
+
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialClass</span> <span class="p">{</span> <span class="cm">/* Partial implementation A */</span> <span class="p">};</span>
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialClass</span> <span class="p">{</span> <span class="cm">/* Partial implementation B */</span> <span class="p">};</span> <span class="c1">// OK</span>
+
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialWithBase</span> <span class="o">:</span> <span class="n">Base</span> <span class="p">{</span> <span class="cm">/* Partial implementation A */</span> <span class="p">};</span>
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialWithBase</span> <span class="p">{</span> <span class="cm">/* Partial implementation B */</span> <span class="p">};</span> <span class="c1">// OK</span>
+
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialWithBase</span> <span class="o">:</span> <span class="n">Base</span> <span class="p">{</span> <span class="cm">/* Partial implementation A */</span> <span class="p">};</span>
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialWithBase</span> <span class="o">:</span> <span class="n">Base</span> <span class="p">{</span> <span class="cm">/* Partial implementation B */</span> <span class="p">};</span> <span class="c1">// Preferred</span>
+
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialWithItf</span> <span class="o">:</span> <span class="n">ItfA</span> <span class="p">{</span> <span class="cm">/* Partial implementation A */</span> <span class="p">};</span>
+<span class="n">partial</span> <span class="k">class</span> <span class="nc">PartialWithItf</span> <span class="o">:</span> <span class="n">ItfB</span> <span class="p">{</span> <span class="cm">/* Partial implementation B */</span> <span class="p">};</span> <span class="c1">// Preferred</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><strong>partial</strong> method can be declare within <strong>partial</strong> classes. A <strong>partial</strong> method consists of two parts: <em>definition</em> and <em>implementation</em> (implying that a <strong>partial</strong> method can only have at most two participants). If the <em>implementation</em> is not provided, the <em>definition</em> as well as the codes that call it is compiled away. (p80)</p>
+</li>
+<li>
+<p><strong>partial</strong> methods <font color="#DA1D1B">must be void and are implicitly private.</font> (p80)</p>
+</li>
+<li>
+<p>C# adopts single inheritance. (p81)</p>
+</li>
+<li>
+<p>Upcasting is implicit and will always succeed. Downcasting requires explicit operation and depends on whether the object is suitably typed (if downcast fails, an <strong>InvalidCastException</strong> is thrown). (P82)</p>
+</li>
+<li>
+<p>Instead of using explicit downcasting, <strong>as</strong> operator can be used to perform downcasting as well, but it evaluates to <strong>null</strong> if casting fails. (p83)</p>
+</li>
+<li>
+<p>The <strong>as</strong> operator cannot perform <em>custom conversions</em> and <font color="#DA1D1B">it cannot do numeric conversion.</font></p>
+<div class="highlight"><pre><span class="kt">long</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span> <span class="n">as</span> <span class="kt">long</span><span class="p">;</span> <span class="c1">// compilation error</span>
+</pre></div>
+
+
+<p>(p83)</p>
+</li>
+<li>
+<p>The <strong>is</strong> operator tests whether a reference conversion would succeed. (p83)</p>
+</li>
+<li>
+<p>The signatures, return types, and accessibility of the <strong>virtual</strong> and <em>overridden</em> methods must be identical. (p84)</p>
+</li>
+<li>
+<p>Calling <strong>virtual</strong> method in constructor is dangerous as the derived class might <strong>override</strong> the method and accessing uninitialized fields in it. (p84)</p>
+</li>
+<li>
+<p>A class declared as <strong>abstract</strong> can never be instantiated. Instead, only its <em>concrete</em> subclasses can be instantiated. (p84)</p>
+</li>
+<li>
+<p>Abstract classes are able to define <em>abstract members</em>. Abstract members are like virtual members, except they don’t provide a default implementation. (p85)</p>
+</li>
+<li>
+<p>Subclasses of <strong>abstract</strong> classes can be <strong>abstract</strong> as well. (p85)</p>
+</li>
+<li>
+<p>A subclass can define identical member with the <strong>new</strong> modifier to <em>hide</em> the member in base class. <font color="#DA1D1B">Hiding means the member is hidden from the base class, i.e., if the instance of a subclass is upcasted into base class, it cannot access the hidden member.</font> (p85)</p>
+</li>
+<li>
+<p>The <strong>sealed</strong> modifier in a function member seals the overridden implementation of a <strong>virtual</strong>/<strong>abstract</strong> method, so that its subclass cannot override this method. Putting the <strong>sealed</strong> modifier in the class will seal all the overridden methods in that class. (p86)</p>
+</li>
+<li>
+<p>A <strong>sealed</strong> method cannot be overridden in subclass, but can be hidden by subclasses. (p86)</p>
+</li>
+<li>
+<p>The <strong>base</strong> keyword is like the <strong>this</strong> keyword, it serves two essential purposes: to access the overridden method in base class, and to call base class constructor. (pp86)</p>
+</li>
+<li>
+<p>Unlike C++, subclass in C# must declare its own constructors. (p87)</p>
+</li>
+<li>
+<p>If a constructor in subclass omits the <strong>base</strong> keyword to call its base class' constructor, the parameterless constructor in base class is called implicitly. If the base class has no parameterless constructor, an error will occur at compile time. (p87)</p>
+</li>
+<li>
+<p>Order of constructor and field initialization: subclass fields -&gt; base class constructor parameters -&gt; base class field -&gt; base class constructor -&gt; subclass constructor. (p88)</p>
+</li>
+<li>
+<p>The resolution of calling overloaded functions is done at compile time regardless the actual runtime type:</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">Func</span><span class="p">(</span><span class="n">Base</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+<span class="kt">int</span> <span class="nf">Func</span><span class="p">(</span><span class="n">Derived</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+<span class="n">Derived</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">();</span>
+<span class="n">Base</span> <span class="n">b</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+
+<span class="n">Func</span><span class="p">(</span><span class="n">d</span><span class="p">);</span> <span class="c1">// Call Func(Derived)</span>
+<span class="n">Func</span><span class="p">(</span><span class="n">b</span><span class="p">);</span> <span class="c1">// Call Func(Base)</span>
+</pre></div>
+
+
+<p>To postpone the resolution to run time, cast the argument to <strong>dynamic</strong>:</p>
+<div class="highlight"><pre><span class="n">Func</span><span class="p">((</span><span class="n">dynamic</span><span class="p">)</span><span class="n">b</span><span class="p">);</span> <span class="c1">// Call Func(Derived)</span>
+</pre></div>
+
+
+<p>(p89)</p>
+</li>
+<li>
+<p><strong>object</strong> is the ultimate base class for all types. <strong>object</strong> itself is a reference type, but value type can also be cast to <strong>object</strong> as well. Casting value type to <strong>object</strong> is called <em>type unification</em>. (p90)</p>
+</li>
+<li>
+<p>Casting from value type to <strong>object</strong>, a.k.a <em>boxing</em>, is implicit, while <em>unboxing</em>, casting <strong>object</strong> back to value type requires explicit casting. (p90)</p>
+</li>
+<li>
+<p><em>Boxing</em> <font color="#DA1D1B">copies</font> the value-type instance into the new object, and <em>unboxing</em> <font color="#DA1D1B">copies</font> the contents of the object back into a value-type instance. The operation is "pass by value". (p91)</p>
+</li>
+<li>
+<p>All types in C# are represented at runtime with an instance of <strong>System.Type</strong>. There are two basic ways to get a <strong>System.Type</strong> object:</p>
+<ul>
+<li>Call <strong>GetType</strong> on the instance. (runtime)</li>
+<li>Use the <strong>typeof</strong> operator on a type name. (complie time)
+(p91)</li>
+</ul>
+</li>
+<li>
+<p><em>Boxing/unboxing</em> only happens when casting is performed. (p92)</p>
+</li>
+<li>
+<p><strong>struct</strong> is a <strong>System.ValueType</strong> and does not support inheritance (hence no <strong>virtual</strong> members). (p93)</p>
+</li>
+<li>
+<p><strong>struct</strong> has an implicit parameterless constructor which will bitwise-zeroing the <strong>struct</strong>, this constructor cannot be replaced. (p94)</p>
+</li>
+<li>
+<p>A constructor of a <strong>struct</strong> must initialize all the fields. (p94)</p>
+</li>
+<li>
+<p>A <strong>struct</strong> has no finalizer. (p93)</p>
+</li>
+<li>
+<p>Default: <strong>public</strong> -&gt; <strong>interface</strong>, <strong>internal</strong> -&gt; non-nested type(<strong>class</strong> without access modifiers), <strong>protected</strong> -&gt; NO DEFAULT, <strong>private</strong> -&gt; member. (p94)</p>
+</li>
+<li>
+<p><strong>internal</strong> and <strong>protected</strong> is not more accessible than each other. <strong>internal</strong> is visible to containing and friend assemblies, <strong>protected</strong> is visible to containing class and subclass. There's a <strong>protected internal</strong>, which is a union of the <strong>protected</strong> and <strong>internal</strong>. (p95)</p>
+</li>
+<li>
+<p><strong>internal</strong> members can be exposed to <em>friend</em> assemblies by using the <strong>System.Runtime.CompilerServices.InternalsVisibleTo</strong> attribute like:</p>
+<div class="highlight"><pre>[assembly: InternalsVisibleTo (&quot;Friend&quot;)]
+</pre></div>
+
+
+<p>(p95)</p>
+</li>
+<li>
+<p>The inner accessibility is controlled by the outter accessibility. (p96)</p>
+</li>
+<li>
+<p>The accessibility of a overridden member function must be consistent/identical between base class and derived class. A subclass can be less accessible than the base, but not more. (p96)</p>
+</li>
+<li>
+<p>If overriding a <strong>protected internal</strong> method <font color="#DA1D1B">in another assembly</font>, the accessibility modifier must be simplified to <strong>protected</strong>. It makes sense as the function is access using <strong>protected</strong> and that function should not be accessed by others in the assembly. (p96)</p>
+</li>
+<li>
+<p><strong>interface</strong> members(methods, properties, events, indexers) are always implicitly <strong>abstract</strong> and <strong>public</strong> and <font color="#DA1D1B">cannot declare an access modifier</font>. Implementing an interface means providing a public implementation for all its members(must be public as the accessibility must be identical). (p97)</p>
+</li>
+<li>
+<p>For an <strong>internal</strong> implementation of a <strong>public</strong> <strong>interface</strong>, the methods of it can be accessed by upcasting the instance to the <strong>interface</strong>. (p97)</p>
+</li>
+<li>
+<p><strong>interface</strong> can derive from <strong>interface</strong>. (p97)</p>
+</li>
+<li>
+<p>If two(or more) interfaces have same member signatures, implementing them would result in a collision. <em>Explicitly implementing</em> an interface can resolve this.</p>
+<div class="highlight"><pre><span class="n">interface</span> <span class="n">I1</span> <span class="p">{</span> <span class="kt">void</span> <span class="n">Foo</span><span class="p">();</span> <span class="p">}</span>
+<span class="n">interface</span> <span class="n">I2</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">Foo</span><span class="p">();</span> <span class="p">}</span> <span class="c1">// Note that the signature of a function is its parameters.</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Bar</span><span class="o">:</span> <span class="n">I1</span><span class="p">,</span> <span class="n">I2</span> <span class="c1">// Order of interface does not matter</span>
+<span class="p">{</span>
+    <span class="c1">// This will be the default one</span>
+    <span class="k">public</span> <span class="kt">void</span> <span class="n">Foo</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* implementation */</span> <span class="p">}</span>
+
+    <span class="c1">// Need to cast Bar to I2 to call this</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">I2</span><span class="p">.</span><span class="n">Foo</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* implementation */</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Bar</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Bar</span><span class="p">();</span>
+<span class="n">bar</span><span class="p">.</span><span class="n">Foo</span><span class="p">();</span> <span class="c1">// Default one, I1.Foo</span>
+<span class="p">((</span><span class="n">I1</span><span class="p">)</span><span class="n">bar</span><span class="p">).</span><span class="n">Foo</span><span class="p">();</span> <span class="c1">// I1.Foo</span>
+<span class="p">((</span><span class="n">I2</span><span class="p">)</span><span class="n">bar</span><span class="p">).</span><span class="n">Foo</span><span class="p">();</span> <span class="c1">// I2.Foo</span>
+</pre></div>
+
+
+<p>It's a good practice that you want user to call the "save" one by default and call other ones explicitly. (p98)</p>
+</li>
+<li>
+<p>An <em>implicitly implemented</em> interface member is <font color="#DA1D1B">by default sealed</font>. It <font color="#DA1D1B">must</font> be marked <strong>virtual</strong> or <strong>abstract</strong> in the <font color="#DA1D1B">base class(virtual can only be marked at base class)</font> in order to be overridden. (p98)</p>
+</li>
+<li>
+<p>A <em>explicitly implemented</em> interface member can not be marked <strong>virtual</strong> nor be <em>overridden</em>. A subclass can <em>reimplement</em> a method <em>explicitly implemented</em> in base class by using the <strong>new</strong> modifier. Reimplementation is a special kind of <em>hiding</em>, but the interface itself is able to access the method. Reimplementation has quite some drawbacks. (p99)</p>
+</li>
+<li>
+<p><strong>struct</strong> can also implement <strong>interface</strong> as well, cast between <strong>struct</strong> and <strong>interface</strong> requires boxing. (p101)</p>
+</li>
+<li>
+<p><strong>enum</strong> is essentially a group of integers with names. It can be casted to <strong>int</strong> or casted back to <strong>enum</strong>. It's basically the same as enum in C++.</p>
+</li>
+<li>
+<p><em>Flags</em> enum is a special type of enum. It's still integers but the <code>[Flags]</code> attribute forces the enum to be assigned explicitly, typically in power of 2. (p103)</p>
+</li>
+<li>
+<p>By convention, the <em>Flags</em> attribute should always be applied to an enum type when its members are combinable. If you declare such an enum without the Flags attribute, you can still combine members, but calling <strong>ToString</strong> on an enum instance will emit a number rather than a series of names(<strong>ToString</strong> on <strong>enum</strong> will return the name of it). (p103)</p>
+</li>
+<li>
+<p>Casting between different <strong>enum</strong> is like assigned the integral value. (p102)</p>
+</li>
+<li>
+<p>If two(or more) <strong>interface</strong> have completely identical method, i.e., same parameter list and return type, it's not necessary to use <em>explicit implementation</em> to implement both, implement only one will satisfies those interfaces. However, <em>implicit implementation</em> can still be used to "hide" the implementation of a specific interface from other interfaces so that only that interface is able to access it. (out of book)</p>
+</li>
+<li>
+<p>As there's no limitation on casting integer to <strong>enum</strong> or casting between <strong>enums</strong>, it's usually a bad idea to use cast on <strong>enum</strong> casually. (p104)</p>
+</li>
+<li>
+<p><em>Nested class</em> is by default <strong>private</strong>, but can be made more accessible. <em>Nested class</em> can access the private members of its enclosing class. To access a <em>nested class</em> from outside the enclosing type requires qualification with the enclosing type’s name. (p105)</p>
+</li>
+<li>
+<p>There're <em>generic types</em> and <em>generic method</em>, in declaration they both have <em>type parameters</em>, but usually only <em>generic types</em> require <em>type arguments</em> as the compiler is able to infer the type of <em>generic method</em>. (p109)</p>
+</li>
+<li>
+<p>Properties, indexers, events, fields, constructors, operators, and so on <font color="#DA1D1B">cannot declare type parameters</font>, although they can <font color="#DA1D1B">partake</font> in any type parameters already declared by their enclosing type. Similarly, constructors can partake in existing type parameters, but not introduce them. (p109)</p>
+</li>
+<li>
+<p>Type parameters can be introduced in the declaration of <strong>classes</strong>, <strong>structs</strong>, <strong>interfaces</strong>, <strong>delegates</strong> (covered in Chapter 4), and <em>methods</em>. Other constructs, such as <em>properties</em>, cannot introduce a type parameter, but can <em>use</em> one. (p109)</p>
+</li>
+<li>
+<p>A generic type or method can have multiple type parameters, and as long as the number of type parameters is different, the generic class name can be overloaded. (p110)</p>
+</li>
+<li>
+<p>There's no <em>open</em> generic type at runtime, all <em>open</em> generic type are closed as part of the compilation. However the <strong>Type</strong> of the <em>open</em> type can exist at runtime.</p>
+<div class="highlight"><pre><span class="n">Type</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">typeof</span><span class="p">(</span><span class="n">A</span><span class="o">&lt;&gt;</span><span class="p">);</span>
+<span class="n">Type</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">typeof</span><span class="p">(</span><span class="n">A</span><span class="o">&lt;</span><span class="p">,</span><span class="o">&gt;</span><span class="p">);</span> <span class="c1">// Unbound class</span>
+<span class="n">Type</span> <span class="n">t3</span> <span class="o">=</span> <span class="n">typeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span> <span class="c1">// This is acutally closed</span>
+</pre></div>
+
+
+<p>(p110)</p>
+</li>
+<li>
+<p>Constrains can be placed on generic type. There're possible constrains:</p>
+<p>where T : <em>base-class</em> // T has to be a subclass of or is a <em>base-class</em>
+where T : <em>interface</em> // T must implements the <em>interface</em>
+where T : <strong>class</strong> // T must be a reference type
+where T : <strong>struct</strong> // T must be a value type
+where T : new() // T must has a accessible parameterless constructor
+where T : U // T must be a subclass of or is a U
+(p111)</p>
+</li>
+<li>
+<p>When sub-classing a generic type, the subclass can choose to close none/some/all of the type parameters of the generic type:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">NoneClose</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Interface</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">SomeClose</span><span class="o">&lt;</span><span class="n">U</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Interface</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">U</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">AllClose</span> <span class="o">:</span> <span class="n">Interface</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p>(p111)</p>
+</li>
+<li>
+<p>A type can name itself as the concrete type when closing a type argument: </p>
+<div class="highlight"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Balloon</span> <span class="o">:</span> <span class="n">IEquatable</span><span class="o">&lt;</span><span class="n">Balloon</span><span class="o">&gt;</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Foo</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">where</span> <span class="nl">T</span> <span class="p">:</span> <span class="n">IComparable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="k">class</span> <span class="nc">Bar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">where</span> <span class="nl">T</span> <span class="p">:</span> <span class="n">Bar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="c1">// Decorator</span>
+</pre></div>
+
+
+<p>(p112)</p>
+</li>
+<li>
+<p><strong>static</strong> data is unique for each closed type. (p113)</p>
+</li>
+<li>
+<p>Given a <em>base</em> class and a <em>derived</em> class, <strong>X</strong> is <em>convariant</em> if <strong>X<derived></strong> is convertible to <strong>X<base></strong>. <strong>Y</strong> is <em>contravariant</em> if <strong>Y<base></strong> is convertible to <strong>Y<derived></strong>. By default those conversion is illegal and will result in compile time error. (p115)</p>
+</li>
+<li>
+<p>Arrays are covariant. (p116)</p>
+</li>
+<li>
+<p>Generic interfaces support <em>covariance</em> for type parameters marked with the <strong>out</strong> modifier, and support <em>contravariance</em> for type parameters marked with <strong>in</strong> modifier. (p116)</p>
+</li>
+</ol>
+<br/>
+  <div>
+    <p class="article-info">[ <a href="/categories.html">Category</a> ]: <a href="/category/Coding.html">Coding</a>
+    </p>
+    <p class="article-info">[ <a href="/tags.html">Tags</a> ]
+: 
+<a href="/tag/reading-notes.html">Reading-Notes</a>&nbsp;&nbsp;<a href="/tag/code.html">Code</a>&nbsp;&nbsp;<a href="/tag/c#.html">C#</a>&nbsp;&nbsp;    </p>
+  </div>
+</section>
+<section>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">var disqus_shortname = 'cenhaosblog';(function() {  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();
+</script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+</section>    </div>
+    <footer id="footer">
+      <ul class="icons">
+        <li><a href="http://www.linkedin.com/pub/hao-cen/80/bbb/91a" class="icon fa-linkedin"><span class="label">Linkedin</span></a>
+        </li>
+        <li><a href="https://github.com/cenhao" class="icon fa-github"><span class="label">Github</span></a>
+        </li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; Hao Cen</li>
+        <li>Design: <a href="http://html5up.net">HTML5 UP</a>
+        </li>
+        <li>Powered by: <a href="http://blog.getpelican.com">Pelican</a>
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>
