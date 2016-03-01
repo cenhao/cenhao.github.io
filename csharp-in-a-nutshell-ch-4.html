@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!-- Strata by HTML5 UP-->
+<!-- html5up.net | @n33co-->
+<!-- Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)-->
+<!-- Edit by Hao-->
+<html lang="en">
+  <head>    <title>Hao&#39;s Blog    </title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.poptrox.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/init.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="/css/skel.css">
+      <link rel="stylesheet" href="/css/style.css">
+      <link rel="stylesheet" href="/css/style-xlarge.css">
+    </noscript>
+  </head>
+  <body id="top">
+    <div>
+      <nav id="nav">
+        <ul class="container">
+          <li><a href="/" class="fa fa-code"></a>
+          </li>          <li><a href="/category/coding.html">Coding</a>
+          </li>          <li><a href="/category/life.html">Life</a>
+          </li>          <li><a href="/archives.html">Archives</a>
+          </li>          <li><a href="/pages/about.html">About</a>
+          </li>        </ul>
+      </nav>
+    </div>
+    <header id="header"><a href="#" class="image avatar"><img src="/images/me.jpg" alt=""></a>
+      <h1><strong>I'm Hao</strong>, a fan of programming.<br>Welcome to my blog,<br>where I keep my ideas and thoughts.<br>
+      </h1>
+    </header>
+    <div id="main"><section>
+  <header class="major">
+    <h2>Reading Notes on C# 5.0 in a Nutshell Ch.4</h2>
+  </header>
+  <p class="time">Sun 01 Nov 2015</p><br/><br/><ol>
+<li>
+<p>A <strong>delegate</strong> is an object that knows how to call a method. (p119)</p>
+</li>
+<li>
+<p>A <strong>delegate</strong> instance literally acts as a <em>delegate</em> for the caller: the caller invokes the delegate, and then the delegate calls the target method. This indirection decouples the caller from the target method. (p120)</p>
+</li>
+<li>
+<p>All delegate instances have <em>multicast</em> capability. This means that a delegate instance can reference <font color="#DA1D1B">not just a single target method, but also a list of target methods</font>. (p121)</p>
+</li>
+<li>
+<p><code>+</code> and <code>+=</code> can be used to combine delegate instances, while <code>-</code> and <code>-=</code> are used to remove delegate instances. Delegates are invoked in the order they are added. (p121)</p>
+</li>
+<li>
+<p>All the methods in a multicast delegate are invoked, however only the return value of the last delegate is returned, the others are discarded. A good practice is only assign methods which returns <strong>void</strong> to a multicast delegate. (p121)</p>
+</li>
+<li>
+<p>Both <em>instance</em> method(non-static member function) and <strong>static</strong> method can be assigned to a delegate. The delegate's <strong>Target</strong> property will keep a reference to that instance. In the case of <strong>static</strong> method is assigned, the <strong>Target</strong> is <strong>null</strong>. (p122)</p>
+</li>
+<li>
+<p>A <strong>delegate</strong> type may contain generic type parameters. Like:</p>
+<div class="highlight"><pre><span class="n">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">Inc</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">++</span><span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">public</span> <span class="n">delegate</span> <span class="n">T</span> <span class="n">DoSomething</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">(</span><span class="n">T</span> <span class="n">arg</span><span class="p">);</span>
+<span class="n">DoSomething</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Inc</span><span class="p">;</span>
+</pre></div>
+
+
+<p>(p123)</p>
+</li>
+<li>
+<p><strong>Func</strong> and <strong>Action</strong> are predefined generic delegates.Both <strong>Func</strong> and <strong>Action</strong> support parameter number from 0 to 16.</p>
+<div class="highlight"><pre><span class="n">public</span> <span class="n">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="o">&lt;</span><span class="p">[</span><span class="n">in</span> <span class="n">T1</span><span class="p">,</span> <span class="p">[</span><span class="n">in</span> <span class="n">T2</span><span class="p">,</span> <span class="p">[...,</span> <span class="p">[</span><span class="n">in</span> <span class="n">T16</span><span class="p">]]]],</span> <span class="n">out</span> <span class="n">TResult</span><span class="o">&gt;</span>
+    <span class="p">([</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="p">[</span><span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="p">[...,</span> <span class="p">[</span><span class="n">T16</span> <span class="n">arg16</span><span class="p">]]]]);</span>
+
+<span class="n">public</span> <span class="n">delegate</span> <span class="kt">void</span> <span class="n">Action</span><span class="o">&lt;</span><span class="p">[</span><span class="n">in</span> <span class="n">T1</span><span class="p">,</span> <span class="p">[</span><span class="n">in</span> <span class="n">T2</span><span class="p">,</span> <span class="p">[...,</span> <span class="p">[</span><span class="n">in</span> <span class="n">T16</span><span class="p">]]]]</span><span class="o">&gt;</span>
+    <span class="p">([</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="p">[</span><span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="p">[...,</span> <span class="p">[</span><span class="n">T16</span> <span class="n">arg16</span><span class="p">]]]]);</span>
+</pre></div>
+
+
+<p><strong>ref</strong>/<strong>out</strong> and <em>pointer</em> parameters are not supported for <strong>Func</strong> and <strong>Action</strong>. (p124)</p>
+</li>
+<li>
+<p>Delegate types are all <font color="#DA1D1B">incompatible</font> with each other, even if their signatures are the same. (p126)</p>
+</li>
+<li>
+<p>Delegate <em>instances</em> are considered equal if they have the same method targets. Multicast delegates are considered equal if they reference the same methods in the same order. (p126)</p>
+</li>
+<li>
+<p>A delegate can have more specific parameter types than its method target, and more general return type than its method target. (p127)</p>
+</li>
+<li>
+<p>When defining generic delegates, a good practice is to:</p>
+<ul>
+<li>mark a type parameter used only on the return value as covariant (<strong>out</strong>).</li>
+<li>Mark any type parameters used only on parameters as contravariant (<strong>in</strong>).
+(p127)</li>
+</ul>
+</li>
+<li>
+<p><strong>event</strong> is a language feature designed specifically for the <em>broadcaster/subscriber</em> model, it's used as a modifier for the delegate. With <strong>event</strong>, when accessing outside the class, subscriber can only use <code>+=</code> or <code>-=</code> to modify the delegate(while <code>=</code> or invoking the delegate is not allowed), and the delegate can be invoke inside the class only. (p128)</p>
+</li>
+<li>
+<p>There's a standard way of defining a event delegate:</p>
+<ul>
+<li>It must have a void return type.</li>
+<li>It must accept two arguments: the first of type <strong>object</strong>, and the second a <font color="#DA1D1B">subclass</font> of <strong>EventArgs</strong>. The first argument indicates the event broadcaster, and the second argument contains the extra information to convey.</li>
+<li>Its name must end with <code>EventHandler</code>.
+(p131)</li>
+</ul>
+</li>
+<li>
+<p>The <code>System.EventHandler&lt;&gt;</code> and <code>System.EvenHandler</code> are predefined delegate that satisfy the rules mentioned in #14.</p>
+<div class="highlight"><pre><span class="n">public</span> <span class="n">delegate</span> <span class="kt">void</span> <span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">TEventArgs</span><span class="o">&gt;</span>
+    <span class="p">(</span><span class="n">object</span> <span class="n">source</span><span class="p">,</span> <span class="n">TEventArgs</span> <span class="n">e</span><span class="p">)</span> <span class="n">where</span> <span class="nl">TEventArgs</span> <span class="p">:</span> <span class="n">EventArgs</span><span class="p">;</span>
+<span class="n">public</span> <span class="n">delegate</span> <span class="kt">void</span> <span class="nf">EventHandler</span><span class="p">(</span><span class="n">object</span> <span class="n">source</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<p>(p131)</p>
+</li>
+<li>
+<p>The standard to fire an event is to wrap the invocation of the event delegate with a <strong>protected virtual</strong> method, whose name starts with <code>On</code>. And in multithreaded scenarios, you need to assign the delegate to a temporary variable before testing and invoking it, to avoid an obvious thread-safety error:</p>
+<div class="highlight"><pre><span class="n">protected</span> <span class="n">virtual</span> <span class="kt">void</span> <span class="nf">OnSomethingChanged</span> <span class="p">(</span><span class="n">SomeEventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">var</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">EventDelegate</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">temp</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="n">temp</span><span class="p">(</span><span class="n">this</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>(p132)</p>
+</li>
+<li>
+<p>The <strong>EventArgs.Empty</strong> property can be used to avoid unnecessarily instantiating an instance of <strong>EventArgs</strong> when passing <strong>EvenArgs</strong> is not necessary. (p133)</p>
+</li>
+<li>
+<p>Besides auto-generating event <em>accessors</em>, C# also supports manually defining <em>explic</em> accessor by using <strong>add</strong> and <strong>remove</strong>. This is useful for:</p>
+<ul>
+<li>
+<p>Delegating the event handler to another class</p>
+<div class="highlight"><pre><span class="n">public</span> <span class="n">event</span> <span class="n">EventHandler</span> <span class="n">Eh</span>
+<span class="p">{</span>
+    <span class="n">add</span> <span class="p">{</span> <span class="n">someOtherClass</span><span class="p">.</span><span class="n">Eh</span> <span class="o">+=</span> <span class="n">value</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">remove</span> <span class="p">{</span> <span class="n">someOtherClass</span><span class="p">.</span><span class="n">Eh</span> <span class="o">-=</span> <span class="n">value</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Hiding the actual event handler storage, if there're way more event handlers than event listener</p>
+<div class="highlight"><pre><span class="n">private</span> <span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">EventHandler</span><span class="o">&gt;</span> <span class="n">_ehDict</span><span class="p">;</span>
+<span class="n">public</span> <span class="n">event</span> <span class="n">EventHandler</span> <span class="n">Eh1</span>
+<span class="p">{</span>
+    <span class="n">add</span> <span class="p">{</span> <span class="n">_ehDict</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// Ignore null cases</span>
+<span class="p">}</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Explicitly implementint an interface that declares an event. 
+(p134)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Like methods, events can be <strong>virtual</strong>, <strong>overridden</strong>, <strong>abstract</strong>, <strong>seal</strong> and <strong>static</strong>. (p135)</p>
+</li>
+<li>
+<p>A <em>lambda expression</em> is an unnamed method writen in place of a delegate instance. A lambda expression is converted to either of these two forms: a delegate instance or an <em>expression tree</em>, of type <strong>Expression<TDelegate></strong> (not discussed at this point). (p135)</p>
+</li>
+<li>
+<p>A lambda expression has this form: <code>(paramters) =&gt; expression-or-statement-block</code>. (Note that lambda exprssion supports statement block). For convenience, <font color="#DA1D1B">iff</font> there's only one parameter, the parentheses can be omitted. (p135)</p>
+</li>
+<li>
+<p>Usually the type of a lambda paramter is inferred by the compiler according to the context. But the type can also be explictly specified.</p>
+<div class="highlight"><pre><span class="n">Func</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">pow2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span>
+</pre></div>
+
+
+<p>(p136)</p>
+</li>
+<li>
+<p>A lambda expression can reference the local variables and parameters of the method in which it’s defined (<em>outer variables</em>). Outer variables referenced by a lambda expression are called <em>captured variables</em>. A lambda expression that captures variables is called a <font color="#DA1D1B"><em>closure</em></font>. (p136)</p>
+</li>
+<li>
+<p><font color="#DA1D1B">Captured variables are evaluated when the delegate is actually invoked, not when the variables were captured</font>. So this postponed evaluation requires captured variables to have their lifetimes extended to that of the delegate. (p137)</p>
+</li>
+<li>
+<p>A local variable instantiated within a lambda expression is just like a local variable in a method, it's unique per invocation of the delegate instance. (p137)</p>
+</li>
+<li>
+<p>Be careful when capturing iteration variable, because of postponed evaluation, when the delegate is invoke, the captured variable might have been modified. The iteration variable in <strong>foreach</strong> is immutable, so it doesn't suffer this problem as the other iteration variables(After C# 5.0). (p139)</p>
+</li>
+<li>
+<p>Regardless if the exception is caught/handled/rethrown or not, the <strong>finally</strong> block is always executed. (p141)</p>
+</li>
+<li>
+<p>The type of an exception must be either <strong>System.Exception</strong> or a subclass of this. (p142)</p>
+</li>
+<li>
+<p>If there're multiple possible exceptions will be caught, put the specific ones first. (p142)</p>
+</li>
+<li>
+<p>An exception can be caught without specifying a variable, if you don’t need to access its properties. If the type of the exception does not matter, the type can be omitted as well. (p143)</p>
+</li>
+<li>
+<p>A <strong>finally</strong> block excutes either:</p>
+<ul>
+<li>After a <strong>catch</strong> block finishes</li>
+<li>After the control leaves the <strong>try</strong> block because of a <strong>jump</strong> statement (e.g., <strong>return</strong> or <strong>goto</strong>)</li>
+<li>After the <strong>try</strong> block ends</li>
+</ul>
+<p>The only things that can defeat a finally block are an infinite loop, or the process ending abruptly. (p143)</p>
+</li>
+<li>
+<p>The <strong>using</strong> statement provides a elegant wait of calling <strong>Dispose</strong> on an <strong>IDisposable</strong> by using <strong>finally</strong> block. (p144)</p>
+</li>
+<li>
+<p>When in a catch block, the exception can be rethrown without changes by simply calling <code>throw;</code>. Alternatively, a new exception can be thrown as well. (p145)</p>
+</li>
+<li>
+<p>The <strong>StackTrace</strong>(string), <strong>Message</strong>(string) and <strong>InnerException</strong> are the most important properties of <strong>System.Exception</strong>. (p146)</p>
+</li>
+<li>
+<p>It's a common practice to implement a nothrow function with name TryXXX where XXX is the one that will throw. (p147)</p>
+</li>
+<li>
+<p>An <em>enumerator</em> is a read-only, forward-only cursor over a <em>sequence of values</em>. (p148)</p>
+</li>
+<li>
+<p>A enumerable object is not a cursor itself, but can produce cursors over itself. It either implements <strong>IEnumerable</strong> / <strong>IEnumerable&lt;T&gt;</strong>, or has a method named <strong>GetEnumerator</strong> that returns an <em>enumerator</em>. The <strong>foreach</strong> statement can iterate over a enumerable object. (p148)</p>
+</li>
+<li>
+<p>The <em>collection initializor</em> is implemented using the <strong>Add</strong> method in from the <strong>IEnumerable</strong> interface, hence to use collection initializor the class must implement the <strong>IEnumerable</strong> interface. (p149)</p>
+</li>
+<li>
+<p>An <em>iterator</em> is a method, property, or indexer that contains one or more <strong>yield</strong> statements. An <strong>iterator</strong> must return a <strong>IEnumerable</strong>/<strong>IEnumerable&lt;T&gt;</strong>/<strong>IEnumerator</strong>/<strong>IEnumerator&lt;T&gt;</strong>, and depending on the type of the interface returned, the <em>itertor</em> has different sematics. (p150)</p>
+</li>
+<li>
+<p>To exit early, the <em>iterator</em> can only use <strong>yield break</strong>, <strong>return</strong> is not allowed in an <em>iterator</em>. (p151)</p>
+</li>
+<li>
+<p><strong>yield</strong> can't be used in a <strong>catch</strong> block or a <strong>finally</strong> block, and it can be used in the <strong>try</strong> block only when the <strong>try</strong> block has only a <strong>finally</strong> block. (p151)</p>
+</li>
+<li>
+<p>When using enumerator explicitly, remember to dispose them. A good practice would be protect the enumerator with a <strong>using</strong> clause. <strong>foreach</strong> statement dispose the enumerator implicitly. (p152)</p>
+</li>
+<li>
+<p><strong>T?</strong> is translated into <strong>Nullable&lt;T&gt;</strong>, which is a <font color="DA1D1B">immutable sturcture</font>. However <strong>T?</strong> can be used together with <strong>null</strong> as the compiler will automatically convert it to the <em>Nullable&lt;T&gt;</em> sematic. (p154)</p>
+</li>
+<li>
+<p>When <strong>T?</strong> is boxed, the boxed value on the heap contains <strong>T</strong>, not <strong>T?</strong>, since reference type can already express <strong>null</strong>. And when unboxed back to <strong>Nullable&lt;T&gt;</strong>, the value will be <strong>null</strong> (<strong>HasValue</strong> is false) if cast fails. (p154)</p>
+</li>
+<li>
+<p>Calling the <strong>Value</strong> of a nullable type will throw an <strong>InvalidOperationException</strong> if <strong>HasValue</strong> is false. (p154)</p>
+</li>
+<li>
+<p>Though nullable type does not define any operator, the compiler will <em>lift</em> the operator from the underlying type. Mixing nullable and non-nullable operator will convert the non-nullable to a temperary nullable to perform the operation. When two nullables are operating together, if none of them is null, then they work as the non-nullable type. (p156)</p>
+</li>
+<li>
+<p>The <strong>??</strong> is the null coalescing operator, it can be used with both <em>reference type</em> and <em>nullable type</em>. It returns the left operand if it's no null, otherwise the right operand. (p156)</p>
+</li>
+<li>
+<p>The null coalescing operator is equivalent to calling <strong>GetValueOrDefault</strong>, except the expressiong for default value is not evaluated if the left operand is not null. (p157)</p>
+</li>
+<li>
+<p>Lots of operators can be overloaded. In addition to the normal operator overloading, C# has <strong>implicit</strong> and <strong>explicit</strong> conversions, and <strong>true</strong> and <strong>fallse</strong> can be overloaded as well. (p158)</p>
+</li>
+<li>
+<p>The <em>compound assignment operators</em> (e.g., <strong>+=</strong>, <strong>/=</strong>) are implicitly overridden by overriding the noncompound operators (e.g., <strong>+</strong>, <strong>/</strong>). The conditional operators <strong>&amp;&amp;</strong> and <strong>||</strong> are implicitly overridden by overriding the bitwise operators <strong>&amp;</strong> and <strong>|</strong>. (p159)</p>
+</li>
+<li>
+<p>An operator is overloaded by declaring an operator function. (p159)</p>
+</li>
+<li>
+<p>For C#, it's more natural to implement the <strong>IComparable</strong> or <strong>IComparable&lt;T&gt;</strong> instead of overloading the <em>equality</em> and <em>comparision</em> operators(more common for <strong>struct</strong>). (p160)</p>
+</li>
+<li>
+<p>To convert between weakly related types, the following strategies are more suitable:</p>
+<ul>
+<li>Write a constructor that has a parameter of the type to convert from.</li>
+<li>Write <strong>ToXXX</strong> and (static) <strong>FromXXX</strong> methods to convert between types.</li>
+</ul>
+<p>(p160)</p>
+</li>
+<li>
+<p><em>Extension methods</em> allow an existing type to be extended with new methods without altering the definition of the original type. An extension method is a <strong>static</strong> method of a <strong>static</strong> class, where the this modifier is applied to the first parameter. (p162)</p>
+</li>
+<li>
+<p>Any compatible instance method will always take precedence over an extension method. If two extension methods have the same signature, the extension method must be called as an ordinary static method to disambiguate the method to call. If one extension method has more <font color="#DA1D1B">specific</font> arguments, however, the more specific method takes precedence. (p163)</p>
+</li>
+<li>
+<p>An <em>anonymous type</em> is a simple class created by the compiler on the fly to store a set of values. To create an anonymous type, use the new keyword followed by an object initializer, specifying the properties and values the type will contain. For example:</p>
+<div class="highlight"><pre><span class="n">var</span> <span class="n">dude</span> <span class="o">=</span> <span class="n">new</span> <span class="p">{</span> <span class="n">Name</span> <span class="o">=</span> <span class="s">&quot;Bob&quot;</span><span class="p">,</span> <span class="n">Age</span> <span class="o">=</span> <span class="mi">23</span> <span class="p">};</span>
+</pre></div>
+
+
+<p>(p164)</p>
+</li>
+<li>
+<p>You must use the var keyword to reference an <em>anonymous type</em>, because it doesn’t have a name. The property name of an anonymous type can be inferred from an expression that is itself an <em>identifier</em> (or ends with one). the <strong>Equals</strong> method of a <em>anonymous type</em> is overridden to perform equality comparisons. (p165)</p>
+</li>
+<li>
+<p>In short, <strong>dynamic</strong> type works as other weak type language's variable, that is, it can be assign any type of value, the <em>bingding</em> will be deferred to runtime. When something went wrong, a <strong>RuntimeBinderException</strong> will be thrown most of time. (p165)</p>
+</li>
+<li>
+<p>A class implement <strong>IDynamicMetaObjectProvider</strong> to achieve <em>custom binding</em>. If not, the default <em>language binding</em> will be performed. (p167)</p>
+</li>
+<li>
+<p>An attribute is defined by a class that inherits (directly or indirectly) from the abstract class <strong>System.Attribute</strong>. To attach an attribute to a code element(assemblies, types, members, return values, parameters, and generic type parameters), specify the attribute’s type name in square brackets, before the code element. (p174)</p>
+</li>
+<li>
+<p>Attributes may have <em>named</em> or <em>positional</em> parameters. When specifying an attribute, you must include <em>positional parameters</em> that correspond to one of the attribute’s constructors. <em>Named parameters</em> are optional. (p174)</p>
+</li>
+<li>
+<p>An attribute can also be attached an assembly, while usually it's targeting the code element it immediately precedes. To attach an attribute to an assembly requires explicitly specify the attribute’s target.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="nl">assembly</span><span class="p">:</span><span class="n">AttributeName</span><span class="p">]</span>
+</pre></div>
+
+
+<p>(p175)</p>
+</li>
+<li>
+<p>Multiple attributes can be specified for a single code element. Each attribute can be listed either within the same pair of square brackets (separated by a comma) or in separate pairs of square brackets (or a combination of the two). (p175)</p>
+</li>
+<li>
+<p>I'm skipping the unsafe pointer, preprocess directives and the xml documentation in this reading note, as I feel they're either less used or very easy to use in visual studio.</p>
+</li>
+</ol>
+<br/>
+  <div>
+    <p class="article-info">[ <a href="/categories.html">Category</a> ]: <a href="/category/Coding.html">Coding</a>
+    </p>
+    <p class="article-info">[ <a href="/tags.html">Tags</a> ]
+: 
+<a href="/tag/reading-notes.html">Reading-Notes</a>&nbsp;&nbsp;<a href="/tag/code.html">Code</a>&nbsp;&nbsp;<a href="/tag/c#.html">C#</a>&nbsp;&nbsp;    </p>
+  </div>
+</section>
+<section>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">var disqus_shortname = 'cenhaosblog';(function() {  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();
+</script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+</section>    </div>
+    <footer id="footer">
+      <ul class="icons">
+        <li><a href="http://www.linkedin.com/pub/hao-cen/80/bbb/91a" class="icon fa-linkedin"><span class="label">Linkedin</span></a>
+        </li>
+        <li><a href="https://github.com/cenhao" class="icon fa-github"><span class="label">Github</span></a>
+        </li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; Hao Cen</li>
+        <li>Design: <a href="http://html5up.net">HTML5 UP</a>
+        </li>
+        <li>Powered by: <a href="http://blog.getpelican.com">Pelican</a>
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>
