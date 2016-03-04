@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!-- Strata by HTML5 UP-->
+<!-- html5up.net | @n33co-->
+<!-- Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)-->
+<!-- Edit by Hao-->
+<html lang="en">
+  <head>    <title>Hao&#39;s Blog    </title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.poptrox.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/init.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="/css/skel.css">
+      <link rel="stylesheet" href="/css/style.css">
+      <link rel="stylesheet" href="/css/style-xlarge.css">
+    </noscript>
+  </head>
+  <body id="top">
+    <div>
+      <nav id="nav">
+        <ul class="container">
+          <li><a href="/" class="fa fa-code"></a>
+          </li>          <li><a href="/category/coding.html">Coding</a>
+          </li>          <li><a href="/category/life.html">Life</a>
+          </li>          <li><a href="/archives.html">Archives</a>
+          </li>          <li><a href="/pages/about.html">About</a>
+          </li>        </ul>
+      </nav>
+    </div>
+    <header id="header"><a href="#" class="image avatar"><img src="/images/me.jpg" alt=""></a>
+      <h1><strong>I'm Hao</strong>, a fan of programming.<br>Welcome to my blog,<br>where I keep my ideas and thoughts.<br>
+      </h1>
+    </header>
+    <div id="main"><section>
+  <header class="major">
+    <h2>Cross-domain, CORS and CSRF</h2>
+  </header>
+  <p class="time">Mon 29 Feb 2016</p><br/><br/><p>A month ago I was working on something that requires communication between two domains. Let's say domain <font color="#DA1D1B">product.com</font> contains javascript that will send AJAX requests to APIs hosted in domain <font color="#DA1D1B">api.com</font>, and we own both <font color="#DA1D1B">product.com</font> and <font color="#DA1D1B">api.com</font>. Finally a domain <font color="#DA1D1B">login.com</font> is used by both <font color="#DA1D1B">product.com</font> and <font color="#DA1D1B">api.com</font> to authenticate users, it's owned by the company's account team and we barely have any access to it.</p>
+<p>Here're the requirements:</p>
+<ol>
+<li>
+<p>As we own all three domains, we want to achieve SSO (<strong>S</strong>ingle <strong>S</strong>ign <strong>O</strong>n) experience, i.e., after users goes to <font color="#DA1D1B">product.com</font> and finishes sign in, they won't need to sign in to <font color="#DA1D1B">api.com</font> again with the same account and password.</p>
+</li>
+<li>
+<p><font color="#DA1D1B">api.com</font> accepts two types of authentication: <em>oauth token</em> or <em>cookie</em>. <font color="#DA1D1B">login.com</font> provides public <em>oauth</em> service to get the <em>token</em> of a user, but users will be asked to provide their consent -- they will see a pop-up windows asking them if they allow the <em>app</em> to access their data, like those you will see when you install an app in facebook. We would like to avoid this.</p>
+</li>
+</ol>
+<p>I'll give the quick answer for meeting these requirements: after user logins in to <font color="#DA1D1B">product.com</font>, we embed a <strong>hidden iframe</strong> pointing to <font color="#DA1D1B">api.com</font>. As the two domains use <font color="#DA1D1B">login.com</font> to sign users in, after user signs in to one of them, he won't need to sign in to the other again. Then we can send <strong>cross domain</strong> AJAX requests to <font color="#DA1D1B">api.com</font> with <font color="#DA1D1B">api.com</font>'s cookies.</p>
+<p>Of course things are a lot more complex then this, there're a ton of details to be addressed.</p>
+<p>First we need to understand how <font color="#DA1D1B">login.com</font> performs the authentication:</p>
+<div class="highlight"><pre>    +-----------+                                     +---------+
+    |product.com|    --not sign in, redirect to--&gt;    |login.com|
+    +-----------+                                     +---------+
+
+                                                           |
+                                                    user enter pwd
+                                               set cookie for login.com*
+                                              redirect (with a pass key)
+                                                           |
+                                                           V
+
+    +-----------+                                 +-----------------+
+    |product.com|  &lt;--set cookie, redirect to--   |product.com/login|
+    +-----------+                                 +-----------------+
+</pre></div>
+
+
+<p>The cookie authentication flow for <font color="#DA1D1B">api.com</font> is more or less the same. Please note that I just call it <font color="#DA1D1B">api.com</font> for simplicty, in fact it's more like <font color="#DA1D1B">product2.com</font>, it's just the APIs are hosted under this domain, <font color="#DA1D1B">api.com</font> also hosts other services as well, and some of its services use the cookie to call the APIs.</p>
+<p>But how does a users get SSO for <font color="#DA1D1B">api.com</font> after he signs in to <font color="#DA1D1B">product.com</font>? Here's the illustration:</p>
+<div class="highlight"><pre>    +-------+                                         +---------+
+    |api.com|      --not sign in, redirect to--&gt;      |login.com|
+    +-------+                                         +---------+
+
+                                                           |
+                                              found cookie for login.com**
+                                              redirect (with a pass key)
+                                                           |
+                                                           V
+
+    +-------+                                     +-----------------+
+    |api.com|     &lt;--set cookie, redirect to--    |product.com/login|
+    +-------+                                     +-----------------+
+</pre></div>
+
+
+<p>The key is the two lines marked with <code>*</code> and <code>**</code>. After first time sign in, <font color="#DA1D1B">login.com</font> will set cookie for itself, so next time the user sign in, he won't need to enter his credentials again as <font color="#DA1D1B">api.com</font> can use the cookie. This provides the user SSO experience.</p>
+<p>The second key is how we send cross domain request from <font color="#DA1D1B">product.com</font> to <font color="#DA1D1B">api.com</font>, with cookies of <font color="#DA1D1B">api.com</font>. The <em>same origin policy</em> is imposed on modern browsers, there's no way for javascript to access cookies from a different domain (we can even restrict javascrpit's access to the cookie in the same domain with <strong>HttpOnly</strong>).</p>
+<p>We don't really need to access the cookies, We need to understand, for cross domain request, how can we tell the browser to attach the cookie for us. If it's a simple HTTP request like <strong>GET</strong> or <strong>POST</strong>, the browser will attach the cookies: if there's a form or hyper link targeting another domain in the HTML page, when user triggers it, the cookie for that domain (if any) will be attached to the HTTP request.</p>
+<p>On the other hand, for an AJAX request, the cross domain cookies are not attached by default. But most modern browsers implement AJAX with <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest"><strong>XMLHttpRequest</strong></a>, the browser will attach the cross domain cookies if the <strong>withCredentials</strong> property is set to <strong>true</strong>. (This can be easily done in <em>jQuery</em> too).</p>
+<p>So far, candies, rainbows and unicorns. After we embeded the iframe pointing to <font color="#DA1D1B">api.com</font>, after <font color="#DA1D1B">api.com</font> is properly loaded, we will have the cookies stored in the browser, all we need is sending AJAX request with the setting to tell the browser to attach the cookie for us. It seems the problem is solved.</p>
+<h2>Well, not really.</h2>
+<p>We haven't talked about the security concern for our own services and the security mechanism imposed by the browser.</p>
+<p>I'll talk about <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS"><strong>CORS</strong>(<strong>C</strong>ross <strong>O</strong>rigin <strong>R</strong>esource <strong>S</strong>haring)</a> first. Though we can send cross domain AJAX with the cookies, the browser won't allow the javascript to read the service's response unless the service explicitly allow this.</p>
+<p>More precisely, in the response, it must at least contain the <code>Access-Control-Allow-Origin</code> header telling the browser the <em>origin</em> is allowed to request the service(<font color="#DA1D1B">api.com</font>) with AJAX. Here're a few more things to be noted about the CORS:</p>
+<ol>
+<li>
+<p>For <strong>GET</strong>, <strong>POST</strong> requests with certain headers, they're considered <em>simple</em>, that only 1 HTTP request is required to perform this action. Cross site requests other than that are called <strong>preflighted</strong> requests. 2 HTTP requests are involved in a <strong>preflighted</strong> request, the first one is an HTTP <strong>OPTIONS</strong> request, and the second one is the actual request.</p>
+</li>
+<li>
+<p>There're more different headers for controlling access of cross site AJAX, like <code>Access-Control-Allow-Credentials</code>.</p>
+</li>
+<li>
+<p>Javascrip is not allowed to modify the <code>Origin</code> header, and this header is always set for cross site AJAX (some older browser does not set this header for same origin requests).</p>
+</li>
+<li>
+<p>IE under version 10 has a very poor and non-standard support for cross site AJAX.</p>
+</li>
+</ol>
+<p>After talking about the security mechanism from the browser, we also need to review the service so that we won't be vulnerable to <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery"><strong>CSRF</strong>(<strong>C</strong>ross <strong>S</strong>ite <strong>R</strong>equest <strong>F</strong>orgery)</a> attack.</p>
+<p>If we implemented the service as above, any malicious site could put a link pointing to <font color="#DA1D1B">api.com</font>in the page, and deceive the visitor to click (or whatsoever), so that the malicious site can send request to <font color="#DA1D1B">api.com</font> with the user's cookies. If we have no protection against this, the user's data is basically exposed to all those malicious sites.</p>
+<p>One very common way for CRSF protection is using something call <strong>CSRF token</strong>. The idea is, to request the service, we must send a special header defined by the developer(s) with value returned from the service before, like the value of the cookie, the vaule of the a tag of the page. In short, this value(token) can only be retrieved by visiting the service before sending the request, and must be send in the request in a header that won't be set automatically by the browser. Due to the <em>same origin policy</em>, those malicious sites won't be able to access the token, so they have no way of sending it.</p>
+<p>However, if we use this approach, it means we have to set our custom header. But setting custom header will make the request a <strong>preflighted</strong> one, which will make the <font color="#DA1D1B">product.com</font> slower. As we own both domains, we can add logic on <font color="#DA1D1B">api.com</font> to make it check the <code>Origin</code> header to see if this request is from <font color="#DA1D1B">product.com</font>. It's kinda like using the <code>Origin</code> header as a token, but simpler and less generic.</p>
+<p>The last thing to mention is about the <strong>third party cookie</strong>. A third party cookie is set by sites that are not directly visited by the user, like from the <strong>iframe</strong>. Most browsers have the option to block <strong>third party cookies</strong>, and some browsers even block those cookies by default. As mention we use <strong>iframe</strong> pointing to <font color="#DA1D1B">api.com</font> to provide <strong>sso</strong> experience, so if <strong>third party cookies</strong> are blocked, we won't be able to talk to <font color="#DA1D1B">api.com</font> from <font color="#DA1D1B">product.com</font>, but so far we haven't found a solution for this.</p>
+<br/>
+  <div>
+    <p class="article-info">[ <a href="/categories.html">Category</a> ]: <a href="/category/Coding.html">Coding</a>
+    </p>
+    <p class="article-info">[ <a href="/tags.html">Tags</a> ]
+: 
+<a href="/tag/web.html">web</a>&nbsp;&nbsp;<a href="/tag/security.html">security</a>&nbsp;&nbsp;    </p>
+  </div>
+</section>
+<section>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">var disqus_shortname = 'cenhaosblog';(function() {  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();
+</script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+  </noscript>
+</section>    </div>
+    <footer id="footer">
+      <ul class="icons">
+        <li><a href="http://www.linkedin.com/pub/hao-cen/80/bbb/91a" class="icon fa-linkedin"><span class="label">Linkedin</span></a>
+        </li>
+        <li><a href="https://github.com/cenhao" class="icon fa-github"><span class="label">Github</span></a>
+        </li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; Hao Cen</li>
+        <li>Design: <a href="http://html5up.net">HTML5 UP</a>
+        </li>
+        <li>Powered by: <a href="http://blog.getpelican.com">Pelican</a>
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>
